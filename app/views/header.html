@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>{{.title}}</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="/public/css/bootstrap.css">
+		<link rel="shortcut icon" type="image/png" href="/public/img/favicon.png">
+		<script src="/public/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/public/js/uiscript.js" type="text/javascript" charset="utf-8"></script>
+		{{range .moreStyles}}
+		  <link rel="stylesheet" type="text/css" href="/public/{{.}}">
+		{{end}}
+		{{range .moreScripts}}
+		  <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
+		{{end}}
+	</head>
+
+	
+	<body>
+		<header class="hero-unit">
+			<div class="container">
+				<div class="row">
+					<div class="hero-text">
+						<img src="/public/img/id-book2.jpg" />
+						<h1>ID Number Verification</h1>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row pull-right">
+					<div class="navbar">
+						<ul class="nav">						
+							{{template "nav_link" dict "dot" . "url" "Manual.Entry" "name" "Manual ID Number Capture"}}
+							{{template "nav_link" dict "dot" . "url" "File.Upload" "name" "Upload ID Number List"}}						
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			{{if eq .RunMode "dev"}}
+				{{template "debug.html" .}}
+			{{end}}
+	
+
+{{define "nav_link"}}
+	<li class="{{if eq .dot.action .url}}active{{end}}">
+		<a href="{{url .url}}">{{.name}}</a>
+	</li>
+{{end}}
+		</header>
+
+		<div class="container">
+			<div class="row">
+				<div class="span12">
+					{{template "flash.html" .}}
+				</div>
+			</div>
+		</div>

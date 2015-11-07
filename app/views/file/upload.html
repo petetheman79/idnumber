@@ -1,0 +1,29 @@
+{{set . "title" "Upload Single File"}}
+{{template "header.html" .}}
+
+<div class="container">
+	<div class="row">
+		<div class="span6">
+			<form method="post" action="{{url "File.HandleUpload"}}" enctype="multipart/form-data">
+				<p>
+					<label for="list"><strong>ID Number List:</strong></label>
+					<input type="file" name="idnumberlist" id="list" class="span6">
+				</p>
+				<hr>
+				<input type="button" id="fileuploadbutton" value="Upload" class="btn btn-large btn-success">
+			</form>
+		</div>
+		<div class="span6">
+			<i>
+				You ID number list must contain a list of ID numbers, each number on a new line.<br><br>
+				Eg:<br>
+				7908112341237<br>
+				8001132451637<br>
+				7808215185082<br>
+			</i>
+		</div>
+	</div>
+	{{template "idnumbertable.html" .}}	
+</div>
+
+{{template "footer.html" .}}
