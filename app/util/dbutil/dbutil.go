@@ -11,8 +11,8 @@ import (
 
 func InsertID(idnumber idnumberutil.ID) {
 	// initialize the DbMap
-    dbmap := initDb()
-    defer dbmap.Db.Close()
+    //dbmap := initDb()
+    //defer dbmap.Db.Close()
 
     // insert rows - auto increment PKs will be set properly after the insert
     err := dbmap.Insert(&idnumber)
@@ -21,8 +21,8 @@ func InsertID(idnumber idnumberutil.ID) {
 
 func InsertIDList(idnumberlist []idnumberutil.ID) {
 	// initialize the DbMap
-    dbmap := initDb()
-    defer dbmap.Db.Close()
+    //dbmap := initDb()
+    //defer dbmap.Db.Close()
 
     // insert rows - auto increment PKs will be set properly after the insert
 	for i := 0; i < len(idnumberlist); i++ {
@@ -34,8 +34,8 @@ func InsertIDList(idnumberlist []idnumberutil.ID) {
 
 func GetIDNumberList() []idnumberutil.ID {
 	// initialize the DbMap
-    dbmap := initDb()
-    defer dbmap.Db.Close()
+    //dbmap := initDb()
+    //defer dbmap.Db.Close()
 	
 	var err error
 	var idnumberlist []idnumberutil.ID
@@ -46,7 +46,7 @@ func GetIDNumberList() []idnumberutil.ID {
 }
 
 
-func initDb() *gorp.DbMap {
+func InitDB() *gorp.DbMap {
     // connect to db using standard Go database/sql API
     // use whatever database/sql driver you wish
     db, err := sql.Open("sqlite3", "/tmp/id_db.bin")

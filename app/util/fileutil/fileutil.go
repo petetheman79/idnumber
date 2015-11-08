@@ -16,15 +16,17 @@ func WriteIdListToFile(idList []idnumberutil.ID) {
 }
 
 func WriteIdToFile(id idnumberutil.ID) {
+	toWrite := id.IDNumber + "\r\n"
+
 	if id.Vadility == "Valid" {
-		writeToFile("valid.txt", id.IDNumber)
+		writeToFile("valid.txt", toWrite)
 	} else if id.Vadility == "Invalid" {
-		writeToFile("invalid.txt", id.IDNumber)
+		writeToFile("invalid.txt", toWrite)
 	} 	
 }
 
 func writeToFile(fileName string, data string) {
-	fo, err := os.OpenFile(fileName, syscall.O_APPEND, 0)
+	fo, err := os.OpenFile(fileName, syscall.O_APPEND|os.O_WRONLY, 600)
 	
 	if err != nil {
 		panic(err)

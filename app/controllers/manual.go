@@ -7,7 +7,7 @@ import (
 	
 	"github.com/petetheman79/idnumber/app/util/idnumberutil"
 	"github.com/petetheman79/idnumber/app/util/fileutil"
-	"github.com/petetheman79/idnumber/app/util/dbutil"	
+	//"github.com/petetheman79/idnumber/app/util/dbutil"	
 )
 
 type Manual struct {
@@ -34,7 +34,7 @@ func (c *Manual) Capture(idnumber string) revel.Result {
 	id := idnumberutil.GetID(idnumber)
 
 	fileutil.WriteIdToFile(id)
-	dbutil.InsertID(id)
+	//dbutil.InsertID(id)
 	
 	return c.RenderJson(map[string]interface{}{
 		"ID": id,
