@@ -9,7 +9,9 @@ import (
 
 	"github.com/revel/revel"
 	
-	"github.com/petetheman79/idnumber/app/idnumberutil"
+	"github.com/petetheman79/idnumber/app/util/idnumberutil"
+	"github.com/petetheman79/idnumber/app/util/fileutil"
+	"github.com/petetheman79/idnumber/app/util/dbutil"
 )
 
 const (
@@ -55,6 +57,9 @@ func (c File) HandleUpload(idnumberlist []byte) revel.Result {
 		fmt.Println("-----");
 		fmt.Println(results)
 	}
+	
+	fileutil.WriteIdListToFile(results)
+	dbutil.InsertIDList(results)
 		
 	result := c.RenderJson(map[string]interface{}{		
 		"Status":      "Successfully uploaded",

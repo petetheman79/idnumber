@@ -9,6 +9,7 @@ import (
 )
 
 type ID struct {
+	Id int
 	IDNumber string
 	Count int
 	DateOfBirth string
@@ -177,6 +178,7 @@ func valid(idnumber string) string {
 
 func GetID(idnumber string) ID {
 	id := ID {
+		0,
 		idnumber,
 		len(idnumber),
 		dateOfBirth(idnumber),
