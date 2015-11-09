@@ -2,9 +2,11 @@ package fileutil
 
 
 import (	
+		"path"
 		"fmt"
 		"os"
 		"syscall"
+		"github.com/revel/revel"
 		"github.com/petetheman79/idnumber/app/util/idnumberutil"
 )
 
@@ -19,14 +21,14 @@ func WriteIdToFile(id idnumberutil.ID) {
 	toWrite := id.IDNumber + "\r\n"
 
 	if id.Vadility == "Valid" {
-		writeToFile("valid.txt", toWrite)
+		writeToFile(path.Join(revel.BasePath, "valid.txt"), toWrite)
 	} else if id.Vadility == "Invalid" {
-		writeToFile("invalid.txt", toWrite)
+		writeToFile(path.Join(revel.BasePath,  "invalid.txt"), toWrite)
 	} 	
 }
 
 func writeToFile(fileName string, data string) {
-	fo, err := os.OpenFile(fileName, syscall.O_APPEND|os.O_WRONLY, 600)
+	fo, err := os.OpenFile(fileName, syscall.O_APPEND|syscall.O_WRONLY, 600)
 	
 	if err != nil {
 		panic(err)
