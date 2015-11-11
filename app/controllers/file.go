@@ -26,7 +26,20 @@ type File struct {
 }
 
 func (c File) Upload() revel.Result {
-	return c.Render()
+	results, err := c.Txn.Select(idnumberutil.ID{},
+		`select * from ID`)
+		
+	if err != nil {
+		panic(err)
+	}
+
+	var idlist []*idnumberutil.ID
+	for _, r := range results {
+		id := r.(*idnumberutil.ID)
+		idlist = append(idlist, id)
+	}
+
+	return c.Render(idlist)
 }
 
 func (c File) HandleUpload(idnumberlist []byte) revel.Result {
@@ -53,6 +66,11 @@ func (c File) HandleUpload(idnumberlist []byte) revel.Result {
 	for i := 0; i < len(listOfId); i++ {
 		idnumber := listOfId[i]
 		id := idnumberutil.GetID(idnumber)
+		
+		err := c.Txn.Insert(&id)
+		if err != nil {
+			panic(err)
+		}
 		results = append(results, id);
 		fmt.Println("-----");
 		fmt.Println(results)

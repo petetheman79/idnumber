@@ -1,5 +1,5 @@
 <div class="row">
-	<div id="mydiv" class="hide span12">
+	<div id="mydiv" class="span12">
 		<table id="my_table" class="table-striped" width=100%>
 			<tr>
 				<td><b>Id Number</b></td>
@@ -8,6 +8,15 @@
 				<td><b>Citizenship</b></td>
 				<td><b>Vadility</b></td>
 			</tr>
-		</table>	
+			{{range .idlist}}
+			<tr>
+				<td>{{.IDNumber}}</td>
+				<td>{{.DateOfBirth }}</td>
+				<td>{{.Gender}}</td>      
+				<td>{{.Citizenship}}</td>
+				<td>{{.Vadility}}</td> 
+			</tr>
+			{{end}}
+	</table>	
 	</div>
 </div>

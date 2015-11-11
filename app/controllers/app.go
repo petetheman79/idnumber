@@ -5,7 +5,7 @@ import (
 )
 
 type App struct {
-	*revel.Controller
+	GorpController
 }
 
 type FileInfo struct {

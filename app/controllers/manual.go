@@ -15,7 +15,20 @@ type Manual struct {
 }
 
 func (c *Manual) Entry() revel.Result {
-	return c.Render()
+	results, err := c.Txn.Select(idnumberutil.ID{},
+		`select * from ID`)
+		
+	if err != nil {
+		panic(err)
+	}
+
+	var idlist []*idnumberutil.ID
+	for _, r := range results {
+		id := r.(*idnumberutil.ID)
+		idlist = append(idlist, id)
+	}
+
+	return c.Render(idlist)
 }
 
 
@@ -34,7 +47,11 @@ func (c *Manual) Capture(idnumber string) revel.Result {
 	id := idnumberutil.GetID(idnumber)
 
 	fileutil.WriteIdToFile(id)
-	//dbutil.InsertID(id)
+	
+	err := c.Txn.Insert(&id)
+	if err != nil {
+		panic(err)
+	}
 	
 	return c.RenderJson(map[string]interface{}{
 		"ID": id,
