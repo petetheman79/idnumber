@@ -12,12 +12,17 @@ $(function () {
 		request.done(function(msg) {
 			$("#mydiv").removeClass('hide')
 			addRow(msg.ID);
+			clearIdNumberField();
 		});				
 				
 		request.fail(function(jqZHR, textStatus) {
-			alert('Request Failed: ' + textStatus);
+			alert('Request Failed: ' + textStatus);			
         });
 	});
+	
+	function clearIdNumberField() {
+		$('#idnumber').val('');
+	}
 	
 	var files;
 	$('input[type=file]').on('change', prepareUpload);

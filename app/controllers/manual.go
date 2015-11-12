@@ -2,12 +2,7 @@ package controllers
 
 import (
 	"github.com/petetheman79/idnumber/app/routes"
-
-	"github.com/revel/revel"
-	
-	"github.com/petetheman79/idnumber/app/util/idnumberutil"
-	"github.com/petetheman79/idnumber/app/util/fileutil"
-	//"github.com/petetheman79/idnumber/app/util/dbutil"	
+	"github.com/revel/revel"	
 )
 
 type Manual struct {
@@ -15,16 +10,16 @@ type Manual struct {
 }
 
 func (c *Manual) Entry() revel.Result {
-	results, err := c.Txn.Select(idnumberutil.ID{},
+	results, err := c.Txn.Select(ID{},
 		`select * from ID`)
 		
 	if err != nil {
 		panic(err)
 	}
 
-	var idlist []*idnumberutil.ID
+	var idlist []*ID
 	for _, r := range results {
-		id := r.(*idnumberutil.ID)
+		id := r.(*ID)
 		idlist = append(idlist, id)
 	}
 
@@ -44,9 +39,9 @@ func (c *Manual) Capture(idnumber string) revel.Result {
 		return c.Redirect(routes.Manual.Entry())
 	}
 	
-	id := idnumberutil.GetID(idnumber)
+	id := GetID(idnumber)
 
-	fileutil.WriteIdToFile(id)
+	WriteIdToFile(id)
 	
 	err := c.Txn.Insert(&id)
 	if err != nil {

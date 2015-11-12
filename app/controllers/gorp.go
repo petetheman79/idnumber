@@ -6,7 +6,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	r "github.com/revel/revel"
 	"github.com/revel/modules/db/app"
-	"github.com/petetheman79/idnumber/app/util/idnumberutil"
 )
 
 var (
@@ -23,7 +22,7 @@ func InitDB() {
 		}
 	}
 
-	t := Dbm.AddTable(idnumberutil.ID{}).SetKeys(true, "Id")	
+	t := Dbm.AddTable(ID{}).SetKeys(true, "Id")	
 	setColumnSizes(t, map[string]int{
 		"IDNumber": 25,
 		"DateOfBirth":     10,

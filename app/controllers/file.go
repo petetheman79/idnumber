@@ -3,15 +3,11 @@ package controllers
 import (
 	"strings"
 	"fmt"
-	//"io/ioutil"	
-
+	"path"
+	"os"
+	"syscall"
 	"github.com/petetheman79/idnumber/app/routes"
-
 	"github.com/revel/revel"
-	
-	"github.com/petetheman79/idnumber/app/util/idnumberutil"
-	"github.com/petetheman79/idnumber/app/util/fileutil"
-	//"github.com/petetheman79/idnumber/app/util/dbutil"
 )
 
 const (
@@ -26,16 +22,16 @@ type File struct {
 }
 
 func (c File) Upload() revel.Result {
-	results, err := c.Txn.Select(idnumberutil.ID{},
+	results, err := c.Txn.Select(ID{},
 		`select * from ID`)
 		
 	if err != nil {
 		panic(err)
 	}
 
-	var idlist []*idnumberutil.ID
+	var idlist []*ID
 	for _, r := range results {
-		id := r.(*idnumberutil.ID)
+		id := r.(*ID)
 		idlist = append(idlist, id)
 	}
 
@@ -61,11 +57,11 @@ func (c File) HandleUpload(idnumberlist []byte) revel.Result {
 	listOfId := strings.Split(string(idnumberlist), "\r\n")
 	
 	fmt.Println(listOfId)
-	var results []idnumberutil.ID
+	var results []ID
 	
 	for i := 0; i < len(listOfId); i++ {
 		idnumber := listOfId[i]
-		id := idnumberutil.GetID(idnumber)
+		id := GetID(idnumber)
 		
 		err := c.Txn.Insert(&id)
 		if err != nil {
@@ -76,7 +72,7 @@ func (c File) HandleUpload(idnumberlist []byte) revel.Result {
 		fmt.Println(results)
 	}
 	
-	fileutil.WriteIdListToFile(results)
+	WriteIdListToFile(results)
 	//dbutil.InsertIDList(results)
 		
 	result := c.RenderJson(map[string]interface{}{		
@@ -88,4 +84,50 @@ func (c File) HandleUpload(idnumberlist []byte) revel.Result {
 	fmt.Println(result)
 	
 	return result
+}
+
+func WriteIdListToFile(idList []ID) {
+	for i := 0; i < len(idList); i++ {
+		WriteIdToFile(idList[i])
+	}
+}
+
+func WriteIdToFile(id ID) {
+	toWrite := id.IDNumber + "\r\n"
+
+	if id.Vadility == "Valid" {
+		writeToFile(path.Join(revel.BasePath, "valid.txt"), toWrite)
+	} else if id.Vadility == "Invalid" {
+		writeToFile(path.Join(revel.BasePath,  "invalid.txt"), toWrite)
+	} 	
+}
+
+func writeToFile(fileName string, data string) {
+	//var fo File
+	//var err error
+
+	//if _, err := os.Stat(fileName); os.IsNotExist(err) {		
+	//	fo, err := os.CreateFile(fileName, syscall.O_APPEND|syscall.O_WRONLY|os., 600)
+	//} else {
+	//	fo, err = os.OpenFile(fileName, syscall.O_APPEND|syscall.O_WRONLY, 600)
+	//}
+	
+	fo, err := os.OpenFile(fileName, syscall.O_APPEND|syscall.O_WRONLY|os.O_CREATE, 600)
+	
+	if err != nil {
+		panic(err)
+	}
+	
+	defer func() {
+		if err := fo.Close(); err != nil {
+			panic(err)	
+		}
+	}()
+	
+	no, err := fo.WriteString(data)
+		
+	if err != nil {		
+		panic(err)
+		fmt.Println(no)
+	}	
 }
