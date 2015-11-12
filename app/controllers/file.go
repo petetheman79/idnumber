@@ -41,8 +41,7 @@ func (c File) Upload() revel.Result {
 func (c File) HandleUpload(idnumberlist []byte) revel.Result {
 	// Validation rules.
 	c.Validation.Required(idnumberlist)
-	//c.Validation.MinSize(idnumberlist, 2*KB).
-	//	Message("Minimum a file size of 2KB expected")
+		
 	c.Validation.MaxSize(idnumberlist, 2*MB).
 		Message("File cannot be larger than 2MB")
 		
@@ -73,8 +72,7 @@ func (c File) HandleUpload(idnumberlist []byte) revel.Result {
 	}
 	
 	WriteIdListToFile(results)
-	//dbutil.InsertIDList(results)
-		
+			
 	result := c.RenderJson(map[string]interface{}{		
 		"Status":      "Successfully uploaded",
 		"List":		   results,
@@ -103,15 +101,6 @@ func WriteIdToFile(id ID) {
 }
 
 func writeToFile(fileName string, data string) {
-	//var fo File
-	//var err error
-
-	//if _, err := os.Stat(fileName); os.IsNotExist(err) {		
-	//	fo, err := os.CreateFile(fileName, syscall.O_APPEND|syscall.O_WRONLY|os., 600)
-	//} else {
-	//	fo, err = os.OpenFile(fileName, syscall.O_APPEND|syscall.O_WRONLY, 600)
-	//}
-	
 	fo, err := os.OpenFile(fileName, syscall.O_APPEND|syscall.O_WRONLY|os.O_CREATE, 600)
 	
 	if err != nil {

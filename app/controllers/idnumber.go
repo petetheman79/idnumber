@@ -1,8 +1,6 @@
 package controllers
 
-
 import (		
-		//"strings"
 		"time"
 		"strconv"
 		"fmt"
